@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123f44">
+  <title>启程 · 学生职业发展助手</title>
+  <meta name="description" content="探索职业方向，发现活动，与数字导师交流。学生职业发展助手测试版。">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#message-input">跳到对话输入</a>
+  <div id="login-screen" class="login-screen" hidden>
+    <form id="login-form" class="login-card">
+      <div class="brand-mark" aria-hidden="true">启</div>
+      <span class="eyebrow">启程 / 内测体验</span>
+      <h1>从一个问题开始，<br>探索下一步。</h1>
+      <p>输入测试邀请码，探索职业方向与相关校园资源。</p>
+      <label for="invite-code">测试邀请码</label>
+      <input id="invite-code" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="请输入测试邀请码" required>
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+      <button id="login-submit" class="primary-button" type="submit">进入体验 <span aria-hidden="true">→</span></button>
+      <small>导师名录按脱敏信息展示，资料来源见卡片。对话对象为 AI，非导师本人。</small>
+    </form>
+  </div>
+
+  <div id="app-shell" class="app-shell">
+    <button id="sidebar-backdrop" class="sidebar-backdrop" aria-label="关闭会话列表" hidden></button>
+    <aside id="sidebar" class="sidebar" aria-label="会话导航">
+      <a class="brand" href="/" aria-label="启程首页"><span class="brand-mark" aria-hidden="true">启</span><span><strong>启程</strong><small>学生职业发展助手</small></span></a>
+      <button id="new-chat" class="new-chat"><span aria-hidden="true">＋</span> 开始新对话</button>
+      <div class="nav-caption"><span>最近对话</span><span class="muted">本设备</span></div>
+      <nav id="session-list" class="session-list" aria-label="最近对话"><p class="muted empty-history">还没有对话，来聊聊吧。</p></nav>
+      <div class="sidebar-footer"><span class="small-logo" aria-hidden="true">S</span><div><strong>职业探索实验室</strong><small>校园服务 · DEMO</small></div><span class="version-badge">0.1</span></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div class="topbar-left"><button id="toggle-sidebar" class="icon-button mobile-nav" aria-label="打开会话列表" aria-expanded="false">☰</button><div class="breadcrumb">探索空间 <span>/</span> <strong id="context-title">职业发展助手</strong></div></div>
+        <div class="status-area"><span id="connection-status" class="connection-status"><i></i>正在连接</span><span class="beta-badge">测试版</span></div>
+      </header>
+      <div class="demo-notice"><span class="notice-icon" aria-hidden="true">i</span><span id="data-notice">正在读取资料状态；导师信息按脱敏范围展示。</span></div>
+      <div class="content-grid">
+        <section class="conversation-panel" aria-label="对话">
+          <div id="mentor-banner" class="mentor-banner" hidden><div class="mentor-avatar" aria-hidden="true">AI</div><div><strong id="mentor-name"></strong><p id="mentor-context-note">AI 资料助手 · 非导师本人</p></div><button id="back-to-assistant" class="text-button">返回主助手 ↗</button></div>
+          <div id="chat-scroll" class="chat-scroll">
+            <div id="welcome" class="welcome">
+              <span class="welcome-label"><i></i> 你的下一步，从这里开始</span>
+              <h1>关于未来，<br>我们一起<span>找找方向。</span></h1>
+              <p id="welcome-description" class="welcome-description">聊聊你的兴趣和困惑。我会帮你找到相关的活动、<br class="desktop-break">导师经验，以及值得尝试的一小步。</p>
+              <div class="suggestion-grid">
+                <button class="suggestion" data-prompt="我现在对职业方向有点迷茫，不知道从哪里开始。"><span class="suggestion-icon">↗</span><strong>探索职业方向</strong><span>从兴趣和经历开始梳理</span><b aria-hidden="true">→</b></button>
+                <button class="suggestion" data-prompt="我想了解产品经理，有哪些适合我的校内活动？"><span class="suggestion-icon">▦</span><strong>发现适合的活动</strong><span>找到可以行动的机会</span><b aria-hidden="true">→</b></button>
+                <button class="suggestion" data-prompt="我想找一位导师聊聊职业发展，可以帮我匹配吗？"><span class="suggestion-icon">◇</span><strong>寻找相关导师</strong><span>按行业与职业背景匹配</span><b aria-hidden="true">→</b></button>
+              </div>
+              <div class="welcome-footnote"><span aria-hidden="true">✦</span> 不用一次想清楚，先说说你关心的事。</div>
+            </div>
+            <div id="messages" class="messages" aria-live="polite" aria-relevant="additions"></div>
+          </div>
+          <div class="composer-area">
+            <form id="chat-form" class="composer">
+              <label class="sr-only" for="message-input">输入你的问题</label>
+              <textarea id="message-input" placeholder="说说你的兴趣，或一个正在困扰你的问题…" rows="2" maxlength="4000"></textarea>
+              <div class="composer-bottom"><span class="composer-hint"><span class="sparkle" aria-hidden="true">✦</span> <span id="composer-hint">支持多轮追问 · 资料有据可查</span></span><button id="stop-button" class="stop-button" type="button" hidden>■ 停止</button><button id="send-button" class="send-button" type="submit" aria-label="发送消息" disabled>↑</button></div>
+            </form>
+            <p class="composer-note">AI 建议仅供探索参考，请核实具体信息。<span class="keyboard-hint">Enter 发送 · Shift + Enter 换行</span></p>
+          </div>
+        </section>
+        <aside class="resources-panel" aria-label="资源推荐">
+          <div class="resources-heading"><div><span class="eyebrow">EXPLORE MORE</span><h2>值得了解的资源</h2></div><span class="resource-count" id="resource-count">0</span></div>
+          <p id="resources-caption" class="resources-caption">先随便看看，聊过之后我会帮你缩小范围。</p>
+          <div class="resource-tabs" role="group" aria-label="筛选资源类型"><button class="resource-tab active" data-filter="all" aria-pressed="true">全部</button><button class="resource-tab" data-filter="activity" aria-pressed="false">活动</button><button class="resource-tab" data-filter="mentor" aria-pressed="false">导师</button></div>
+          <div class="resource-search"><label class="sr-only" for="resource-search">搜索资源</label><input id="resource-search" type="search" placeholder="搜索行业、领域或城市" autocomplete="off"><button id="reset-resources" type="button" class="text-button" hidden>查看完整名录</button></div>
+          <p id="resource-results" class="resource-results" aria-live="polite"></p>
+          <div id="resource-list" class="resource-list"><div class="resources-empty">正在加载资源…</div></div>
+          <button id="load-more-resources" type="button" class="load-more-resources" hidden>加载更多</button>
+          <div class="resource-bottom"><span aria-hidden="true">↗</span><p>推荐来自可查阅的资料<br><strong>由你决定下一步</strong></p></div>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

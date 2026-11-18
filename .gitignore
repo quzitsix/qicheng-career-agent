@@ -1,0 +1,55 @@
+# All datasets stay local, including fictional demo records.
+/data/
+/runtime/
+/inbox/
+/uploads/
+/backups/
+
+# Credentials and local configuration.
+api_key
+api_key.*
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*known_hosts*
+
+# Source files, imported documents, databases, logs and export artifacts.
+*.xlsx
+*.xls
+*.xlsm
+*.xlsb
+*.pdf
+*.doc
+*.docx
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.log
+*.zip
+*.tar
+*.tar.gz
+~$*
+
+# Dependencies and generated files.
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.DS_Store
+.idea/
+.vscode/
